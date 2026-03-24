@@ -10,37 +10,41 @@
 
 ---
 
-## 🛑 LE CHIFFRE WTF : 880 000 €
+## 🛑 CHIFFRES WTF : ARRÊTEZ LE MASSACRE
 
-C'est ce qu'un électricien perd **chaque année** à Perpignan en ignorant les appels de dépannage qu'il ne voit jamais.<br><br>
-<kbd>PERTE MENSUELLE : 73 500 €</kbd> &nbsp;|&nbsp; <kbd>INVESTISSEMENT : 1 000 €</kbd> &nbsp;|&nbsp; <kbd>R.O.I : INFINI</kbd>
+| SECTEUR | PERTE ACTUELLE | INVESTISSEMENT | R.O.I |
+| :--- | :--- | :--- | :--- |
+| **⚡️ Électricien** | **880 000 € / an** | 1 000 € | **1 SEMAINE** |
+| **🧱 Carreleur** | **72 000 € / an** | 800 € | **< 1 MOIS** |
+| **💇‍♀️ Coiffeur** | **18 000 € / an** | 600 € | **2 SEMAINES** |
+| **🚿 Plombier** | **24 000 € / an** | 1 000 € | **1 SEMAINE** |
 
 <br>
 
 <a href="https://mattdigitalam.github.io/prospection-elite-scripts/scripts.html">
-  <img src="https://img.shields.io/badge/🔥_LANCER_LA_PRÉSENTATION_ELITE-FF0033?style=for-the-badge&logoColor=white&logo=powerpoint" height="50" alt="Lancer Présentation" />
+  <img src="https://img.shields.io/badge/🔥_LANCER_LA_PRÉSENTATION_PPT-FF0033?style=for-the-badge&logoColor=white&logo=powerpoint" height="60" alt="Lancer Présentation" />
 </a>
 
 <br><br>
 
-## 🛠 LA BOÎTE À OUTILS (SCRIPTS ATOMIQUES)
+## 🎯 L'ARSENAL DE COMBAT (6 SCÉNARIOS)
 
-| CIBLE | ANGLE D'ATTAQUE | LE TRIGGER "WTF" |
-| :--- | :--- | :--- |
-| **💇‍♀️ Coiffeur** | L'Agenda à Trous | *"Combien te coûte chaque place vide ?"* |
-| **⚡️ Électricien** | La Perte Massive | *"Tu laisses 1 million, ton concurrent rigole."* |
-| **🧱 Carreleur** | La Marge Fantôme | *"Ces chantiers refusés vont chez lui."* |
-| **🚿 Plombier** | L'Urgence de Nuit | *"À 2h du mat, on appelle qui ?"* |
+1️⃣ **COIFFEUR (Physique)** : Mains vides, agenda plein.<br>
+2️⃣ **ÉLECTRICIEN (Physique)** : Le choc du million d'euros.<br>
+3️⃣ **CARRELEUR (Téléphone)** : L'appel à froid chirurgical.<br>
+4️⃣ **PLOMBIER (Téléphone)** : L'urgence de nuit lucrative.<br>
+5️⃣ **PLOMBIER (Flyers)** : La synergie frigo/internet.<br>
+6️⃣ **COIFFEUR (Suivi)** : Transformer l'hésitation en vente.<br>
 
 ---
 
-## 🧠 LE MINDSET DU CLOSER (5 RÈGLES)
+## 🧠 LES 3 PHRASES QUI TUENT
 
-1️⃣ **L'AUDIT SANS DOULEUR** : Zéro euro, zéro engagement. Juste les chiffres.<br>
-2️⃣ **LE CARNET PHYSIQUE** : Écrire devant lui. La preuve par l'encre.<br>
-3️⃣ **LE SILENCE TACTIQUE** : Poser la question du prix... et se taire.<br>
-4️⃣ **L'URGENCE DU CONCURRENT** : Pendant qu'il réfléchit, l'autre agit.<br>
-5️⃣ **LA CONTRE-ATTAQUE ROI** : Ce n'est pas une question de prix, c'est de rentabilité.<br>
+> *"Un site internet c'est une boutique qui ferme JAMAIS."*
+
+> *"Pendant que tu attends, ton concurrent agit."*
+
+> *"Ce n'est pas une question de prix. C'est une question de ROI."*
 
 <br>
 
