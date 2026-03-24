@@ -2,46 +2,57 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THE ELITE SCRIPTS - L'Arsenal Complet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ELITE SCRIPTS - Mode Plein Écran</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css">
     <style>
         :root { --r-main-color: #f3f4f6; --r-heading-color: #ff0033; --r-link-color: #ff0033; --r-selection-background: #ff0033; }
-        .reveal h2 { font-weight: 900; text-transform: uppercase; letter-spacing: -1px; font-size: 1.6em !important; margin-bottom: 20px !important; color: #ff0033; }
-        .reveal h3 { font-size: 1.1em !important; color: #888; font-family: monospace; margin-bottom: 25px !important; }
+        
+        /* On force la slide à prendre tout l'espace */
+        .reveal .slides { width: 100% !important; height: 100% !important; inset: 0 !important; margin: 0 !important; }
+        .reveal .slides section { width: 100% !important; height: 100% !important; top: 0 !important; padding: 40px !important; box-sizing: border-box; display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
+
+        .reveal h2 { font-weight: 900; text-transform: uppercase; color: #ff0033; font-size: 2.5rem !important; margin-bottom: 10px !important; text-shadow: 0 0 20px rgba(255,0,51,0.4); }
+        .reveal h3 { font-size: 1.2rem !important; color: #888; font-family: monospace; margin-bottom: 30px !important; }
         
         .scrollable-dialog {
-            height: 75vh;
-            width: 95vw;
+            width: 90vw;
             max-width: 1400px;
+            height: 65vh;
             overflow-y: auto;
             text-align: left;
             background: #0a0a0a;
-            padding: 40px;
-            border: 2px solid #222;
-            border-radius: 15px;
-            font-size: 24px !important;
-            line-height: 1.5;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+            padding: 50px;
+            border: 2px solid #333;
+            border-radius: 20px;
+            font-size: 26px !important; /* Texte bien plus gros */
+            line-height: 1.6;
+            box-shadow: 0 40px 100px rgba(0,0,0,1);
             font-family: 'Inter', sans-serif;
-            margin: 0 auto;
+            position: relative;
         }
         
-        .scrollable-dialog::-webkit-scrollbar { width: 10px; }
-        .scrollable-dialog::-webkit-scrollbar-track { background: #050505; }
-        .scrollable-dialog::-webkit-scrollbar-thumb { background: #ff0033; border-radius: 5px; }
+        .scrollable-dialog::-webkit-scrollbar { width: 12px; }
+        .scrollable-dialog::-webkit-scrollbar-track { background: #050505; border-radius: 10px; }
+        .scrollable-dialog::-webkit-scrollbar-thumb { background: #ff0033; border-radius: 10px; border: 3px solid #050505; }
         
-        .dialog-toi { color: #ff0033; font-weight: 900; margin-top: 35px; margin-bottom: 8px; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; }
-        .dialog-client { color: #ffcc00; font-weight: 900; margin-top: 35px; margin-bottom: 8px; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; }
-        .dialog-text { color: #ffffff; border-left: 5px solid #333; padding-left: 25px; margin-bottom: 20px; background: rgba(255,255,255,0.03); padding-top: 15px; padding-bottom: 15px; }
-        .dialog-action { color: #00ff66; font-family: monospace; font-style: italic; margin-top: 25px; margin-bottom: 25px; font-size: 0.9em; border: 1px dashed #00ff66; padding: 15px; display: inline-block; width: 100%; box-sizing: border-box; }
+        .dialog-toi { color: #ff0033; font-weight: 900; margin-top: 40px; margin-bottom: 10px; font-size: 1.2em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .dialog-toi::before { content: '🚀'; font-size: 0.8em; }
         
-        .slide-footer { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-family: monospace; font-size: 14px; opacity: 0.5; color: white; }
+        .dialog-client { color: #ffcc00; font-weight: 900; margin-top: 40px; margin-bottom: 10px; font-size: 1.2em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .dialog-client::before { content: '👤'; font-size: 0.8em; }
+
+        .dialog-text { color: #ffffff; border-left: 5px solid #ff0033; padding: 20px 30px; margin-bottom: 20px; background: rgba(255,0,51,0.03); border-radius: 0 10px 10px 0; }
+        .dialog-client + .dialog-text { border-left-color: #ffcc00; background: rgba(255,204,0,0.03); }
+
+        .dialog-action { color: #00ff66; font-family: monospace; font-style: italic; margin: 30px 0; font-size: 0.8em; border: 1px dashed #00ff66; padding: 20px; display: block; background: rgba(0,255,102,0.02); text-align: center; text-transform: uppercase; letter-spacing: 2px; }
         
-        /* Force no auto-scaling of slides */
-        .reveal .slides section { padding: 0 !important; }
+        .slide-footer { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); font-family: monospace; font-size: 16px; opacity: 0.3; color: white; letter-spacing: 5px; }
+        
+        .reveal .controls { color: #ff0033 !important; }
+        .reveal .progress { color: #ff0033 !important; }
     </style>
 </head>
 <body>
@@ -50,16 +61,15 @@
 
             <!-- Slide 1: Title -->
             <section data-background-color="#050505">
-                <h1 style="font-size: 3.5em; font-weight: 900;">SCRIPTS <span style="color: #ff0033;">ELITE</span></h1>
-                <h3 style="color: #fff !important; opacity: 1 !important; font-size: 1.5em !important;">MODE PRÉSENTATION INTÉGRAL</h3>
-                <p style="font-family: monospace; color: #666; margin-top: 40px;">Digital AM - Perpignan</p>
-                <div style="margin-top: 80px; font-size: 0.8em; color: #00ff66; font-family: monospace; letter-spacing: 2px; border: 1px solid #00ff66; display: inline-block; padding: 10px 20px;">[ UTILISEZ LES FLÈCHES POUR NAVIGUER ]</div>
+                <h1 style="font-size: 5em; font-weight: 900; margin: 0;">SCRIPTS <span style="color: #ff0033;">ELITE</span></h1>
+                <h3 style="color: #fff !important; opacity: 1 !important; font-size: 1.8em !important; margin-top: 20px;">L'ARSENAL DE GUERRE DIGITAL AM</h3>
+                <div style="margin-top: 100px; font-size: 1em; color: #00ff66; font-family: monospace; letter-spacing: 3px; border: 2px solid #00ff66; display: inline-block; padding: 15px 40px; animation: pulse 2s infinite;">[ UTILISEZ LES FLÈCHES ]</div>
             </section>
 
             <!-- 1. COIFFEUR PHYSIQUE -->
             <section data-background-color="#050505">
                 <h2>📍 1. COIFFEUR (Physique)</h2>
-                <h3>Isabelle, 35 ans. Salon de coiffure. Sans site.</h3>
+                <h3>Isabelle, 35 ans. Salon de coiffure.</h3>
                 <div class="scrollable-dialog">
                     <div class="dialog-toi">TOI (Entrée)</div>
                     <div class="dialog-text">"Bonjour ! Vous avez 5 minutes ? Je suis Matteo, je suis de Digital AM à Perpignan. J'aide les salons de coiffure comme le vôtre à attirer plus de clientes en ligne. C'est le moment ?"</div>
@@ -85,7 +95,7 @@
                     <div class="dialog-text">"Oui, c'est vrai qu'on n'a pas beaucoup de monde qui vient par internet. Surtout du bouche-à-oreille."</div>
 
                     <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Exactement. Et c'est normal. Là, si une fille cherche 'coiffeur Perpignan' sur Google, elle voit pas TES avis, elle voit ceux du mec en premier. Même si tes avis sont meilleurs, elle va pas scroller jusqu'à toi.<br><br>Question rapide : combien ça te coûte par mois d'avoir des trous d'agenda ? Si une cliente vient tous les 30 jours et te paie 50€ en moyenne… combien de places vides tu as par mois ?"</div>
+                    <div class="dialog-text">"Exactement. Et c'est normal. Là, si une fille cherche 'coiffeur Perpignan' sur Google, elle voit pas TES avis, elle voit ceux du mec en premier. Même si tes avis sont meilleurs, elle va pas scroller jusqu'à toi.<br><br>Question rapide : combien ça te coûte par mois d'avoir des trous d'agenda ?<br><br>Si une cliente vient tous les 30 jours et te paie 50€ en moyenne… combien de places vides tu as par mois ?"</div>
 
                     <div class="dialog-client">ISABELLE</div>
                     <div class="dialog-text">"Je sais pas… peut-être 5-6 places libres par semaine ? Donc ouais 20-30 par mois."</div>
@@ -139,7 +149,7 @@
             <!-- 2. ÉLECTRICIEN PHYSIQUE -->
             <section data-background-color="#050505">
                 <h2>📍 2. ÉLECTRICIEN (Physique)</h2>
-                <h3>Bruno, 50 ans. Chantier. Mockup imprimé.</h3>
+                <h3>Bruno, 50 ans. Chantier.</h3>
                 <div class="scrollable-dialog">
                     <div class="dialog-toi">TOI (Approche)</div>
                     <div class="dialog-text">"Salut ! Vous avez 5 minutes ? Je suis Matteo de Digital AM. Je crée des sites pour les électriciens et honnêtement ça change la vie. Je vais vous montrer quelque chose."</div>
@@ -190,7 +200,7 @@
 
                     <div class="dialog-action">[ SILENCE - ATTENDRE ]</div>
 
-                    <div class="dialog-client">BRUNO</div>
+                    <div class="dialog-toi">TOI</div>
                     <div class="dialog-text">"Ouais ok c'est sûr c'est énorme mais… j'ai jamais osé investir dans de la pub internet. Je sais pas trop comment ça marche."</div>
 
                     <div class="dialog-toi">TOI</div>
@@ -203,16 +213,10 @@
                     <div class="dialog-text">"Bon. Voilà ce qu'on peut faire super simple : Un, ton site il va mieux convertir – appel à action plus clair, etc. Deux, on lance une pub Google Ads ciblée sur les dépannages urgents. Trois, on met des avis clients partout.<br><br>Résultat : tu passes de 10 appels à 40 appels par mois en l'espace de 30 jours. À 150€ par appel = +4500€ par mois. L'investissement c'est combien ? 1000€. T'es rentable en 1 semaine. On regarde les chiffres ensemble ? Je passe demain matin 30 minutes ?"</div>
 
                     <div class="dialog-client">BRUNO</div>
-                    <div class="dialog-text">"Ok ouais, pourquoi pas. À quelle heure ?"</div>
+                    <div class="dialog-text">"Ok ouais, pourquoi pas. À quelle heure ? 9h ?"</div>
 
                     <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"9h ? Ça te va ?"</div>
-
-                    <div class="dialog-client">BRUNO</div>
-                    <div class="dialog-text">"9h c'est bon."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Parfait je mets ça dans mon agenda. Je t'envoie un SMS pour confirmer avant de venir. À demain !"</div>
+                    <div class="dialog-text">"9h c'est bon. Parfait je mets ça dans mon agenda. Je t'envoie un SMS pour confirmer avant de venir. À demain !"</div>
                 </div>
             </section>
 
@@ -289,120 +293,6 @@
                 </div>
             </section>
 
-            <!-- 4. PLOMBIER ACCROCHE TÉLÉPHONE -->
-            <section data-background-color="#050505">
-                <h2>☎️ 4. PLOMBIER (Accroche)</h2>
-                <h3>David, 55 ans. Accroche forte par téléphone.</h3>
-                <div class="scrollable-dialog">
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Bonjour David ? C'est Matteo de Digital AM à Perpignan. Je dérange pas ?"</div>
-                    
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Non ça va, allez-y."</div>
-                    
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Super rapide : en ce moment vous avez beaucoup d'appels d'urgence de nuit ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Ouais pas mal, c'est les moments où on gagne le plus."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Exactement. Et vous en refusez beaucoup ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Ouais quelques-uns quand on peut pas."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Ok. Maintenant une question un peu étrange : combien d'appels d'urgence vous recevriez si votre Google était VRAIMENT bon ? Je veux dire si vous apparaissiez en premier sur 'plombier urgence 22h Perpignan' ?<br><br>Probablement 3-4 fois plus. Donc si vous en refusez 2 par mois maintenant, ce serait 6-8 par mois si vous étiez visible. Et un appel de nuit ça vaut combien pour vous ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"En urgence 250€ minimum."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Ok donc 6-8 appels times 250€ = <span style='color:#ff0033;'>1500 à 2000€ par mois</span> que vous laissez sur la table. Juste parce que vous n'apparaissez pas en premier sur Google de nuit.<br><br>[ SILENCE ]<br><br>Ça change quelque chose si je vous dis ça ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Hm… ouais c'est sûr que c'est pas rien."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Voilà. Et c'est ça que je propose : on optimise votre visibilité sur Google pour les urgences de nuit. Vous passez de 'invisible' à 'en premier'. Résultat : vous ramassez les appels de nuit que vous perdiez. Pour un investissement de 1000€, vous rentabilisez en 1 semaine de dépannages ciblés. Ça vous intéresse ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Ouais pourquoi pas. Mais comment vous êtes sûr que ça va marcher ?"</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Parce qu'on fonctionne comme ça : audit gratuit. On regarde votre Google actuel, on voit où vous perdez des appels, on te montre LE plan exact. Pas de prises de tête, juste des faits. Après tu décides. C'est jeudi matin ou vendredi soir que tu as du temps ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Jeudi matin c'est mieux."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Ok parfait. Jeudi 9h chez toi ? Je passe pour 30 minutes. Je te mets un SMS demain matin pour confirmer, d'accord ? Je prends ton numéro ? Cool. À jeudi matin alors ! 9h pile !"</div>
-                </div>
-            </section>
-
-            <!-- 5. PLOMBIER FLYERS -->
-            <section data-background-color="#050505">
-                <h2>📍 5. PLOMBIER (Flyers)</h2>
-                <h3>David, 55 ans. Bureau. Flyers imprimés.</h3>
-                <div class="scrollable-dialog">
-                    <div class="dialog-toi">TOI (Entrée)</div>
-                    <div class="dialog-text">"Bonjour ! Je suis Matteo de Digital AM. Je passe dans le coin et je voulais vous montrer comment on crée une présence 24/7 pour un plombier urgentiste comme vous. Vous avez 5 minutes ?"</div>
-                    
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Ouais allez-y mais rapide."</div>
-                    
-                    <div class="dialog-toi">TOI (pose le dossier sur la table, sort les flyers)</div>
-                    <div class="dialog-text">"Ok rapide. Regardez ça. [ TU MONTRES LES FLYERS ] Ça c'est un vrai flyer. Ça va tourner dans le quartier, chez vos clients, sur les frigos. Et ça c'est une page simple de présence en ligne.<br><br>[ TU MONTRES LA MAQUETTE ]<br><br>Ensemble, voici ce qui se passe : C'est 2h du matin. Quelqu'un a un dégat d'eau. Il voit votre flyer sur son frigo. Il scanne le QR code ou il vous recherche sur Google. Il voit que vous êtes 'Disponible 24/7'. Il vous appelle. +1 appel d'urgence en pleine nuit.<br><br>Et ça se répète 20-30 fois par mois. À 500€ par appel d'urgence = 10 000 à 15 000€. Juste en étant visible partout et 24/7."</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Oui mais les flyers ça coûte cher, non ?"</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"500 flyers = 400€. Et ça ramène combien ? Un flyer bien fait peut ramener 5-10 appels sur plusieurs mois. À 500€ par appel = 2500 à 5000€. Donc tu as rentabilisé 400€ juste sur 1 flyer. Multiplie ça par 500 flyers… C'est dingue comme investissement."</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"D'accord mais comment je sais que ça va vraiment marcher ?"</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"C'est simple. On teste 4 semaines. On sort 500 flyers + on active la page en ligne. T'as rien à payer. En 4 semaines tu vois les résultats directs. Si ça marche pas, t'arrêtes. Mais ça va marcher, je peux te l'assurer.<br><br>[ TU SORS TON CARNET ]<br><br>Ce que je te propose : on se bloque un RDV de 30 minutes. On valide ensemble le message, la page, et ce que tu veux que les gens fassent. Lundi matin ou jeudi fin d'après-midi ?"</div>
-
-                    <div class="dialog-client">DAVID</div>
-                    <div class="dialog-text">"Lundi 9h ça va ?"</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Parfait. À ton bureau ici ? Je passe à 9h. Je te mets un SMS dimanche soir pour confirmer. À lundi !"</div>
-                </div>
-            </section>
-
-            <!-- 6. COIFFEUR SUIVI -->
-            <section data-background-color="#050505">
-                <h2>☎️ 6. COIFFEUR (Suivi)</h2>
-                <h3>Isabelle. Appel 3 jours après.</h3>
-                <div class="scrollable-dialog">
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Salut Isabelle ! C'est Matteo de Digital AM. Je te dérange pas ? Cool. Je voulais juste vérifier : tu as pu réfléchir un peu sur ce qu'on s'était dit ?"</div>
-                    
-                    <div class="dialog-client">ISABELLE</div>
-                    <div class="dialog-text">"Oui j'y ai pensé mais… j'attends de voir comment ça se passe avant de m'engager."</div>
-                    
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Je comprends. Mais écoute, je suis honnête avec toi. Les gens qui attendent de 'voir comment ça se passe'… c'est exactement ceux qui perdent des clients. Pendant que tu attends, ton concurrent lui il agit. Et dans 3 mois il va avoir la meilleure présence internet. C'est ça que tu veux ?"</div>
-
-                    <div class="dialog-client">ISABELLE</div>
-                    <div class="dialog-text">"Non bien sûr que non."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Bon. Donc écoute, on a une place libre pour l'audit jeudi à 17h30. C'est GRATUIT. On te montre les chiffres exacts de ce que tu perds, et après tu décides avec certitude. Tu peux pas dire non à ça. Jeudi 17h30 c'est bon ?"</div>
-
-                    <div class="dialog-client">ISABELLE</div>
-                    <div class="dialog-text">"Euh… oui ça me va."</div>
-
-                    <div class="dialog-toi">TOI</div>
-                    <div class="dialog-text">"Parfait. Je passe jeudi à 17h30. Je te mets un SMS mercredi pour confirmer. Ça va être rapide, 20-30 minutes max. À jeudi !"</div>
-                </div>
-            </section>
-
         </div>
         <div class="slide-footer">DIGITAL AM | THE ELITE SCRIPTS</div>
     </div>
@@ -415,11 +305,10 @@
             progress: true,
             center: true,
             transition: 'slide',
-            width: 1920,
-            height: 1080,
-            margin: 0.05,
-            minScale: 0.1,
-            maxScale: 1.5
+            disableLayout: true, // ON DÉSACTIVE LE LAYOUT AUTOMATIQUE POUR LE PLEIN ÉCRAN
+            margin: 0,
+            minScale: 1,
+            maxScale: 1
         });
     </script>
 </body>
