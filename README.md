@@ -24,6 +24,9 @@
 <a href="https://mattdigitalam.github.io/prospection-elite-scripts/scripts.html">
   <img src="https://img.shields.io/badge/🔥_LANCER_LA_PRÉSENTATION_PPT-FF0033?style=for-the-badge&logoColor=white&logo=powerpoint" height="60" alt="Lancer Présentation" />
 </a>
+<a href="https://mattdigitalam.github.io/prospection-elite-scripts/analyzer.html">
+  <img src="https://img.shields.io/badge/🩺_DIAGNOSTIC_HÉMORRAGIE-WHITE?style=for-the-badge&logoColor=black" height="60" alt="Lancer Analyseur" />
+</a>
 
 <br><br>
 
