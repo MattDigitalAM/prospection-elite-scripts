@@ -3,296 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELITE ANALYZER v2.0 - Digital AM</title>
+    <title>RAPPORT D'HÉMORRAGIE - Digital AM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
-        body { font-family: 'Fira Code', monospace; cursor: crosshair; }
-        .matrix-bg { background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(255,0,51,0.05) 50%, rgba(0,0,0,0) 100%); }
-        .glitch { animation: glitch 1s linear infinite; }
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px,0) skew(0deg); }
-            4%, 60% { transform: translate(-2px,0) skew(0deg); }
-            62% { transform: translate(0,0) skew(5deg); }
-        }
-        .progress-bar-fill { 
-            background: linear-gradient(90deg, #330000 0%, #ff0033 50%, #ff4d4d 100%);
-            box-shadow: 0 0 20px #ff0033;
-            transition: width 0.3s ease;
-        }
-        .scan-line {
-            width: 100%; height: 4px; background: rgba(255, 0, 51, 0.3);
-            position: absolute; top: 0; left: 0; z-index: 50;
-            animation: scan 3s linear infinite; box-shadow: 0 0 15px #ff0033;
-        }
-        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-        .terminal-window { border: 1px solid #333; background: #0a0a0a; box-shadow: 0 0 50px rgba(0,0,0,1); }
-        .log-entry { border-left: 2px solid #333; padding-left: 15px; margin-bottom: 8px; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #050505; }
+        .mono { font-family: 'Fira Code', monospace; }
+        .terminal-window { border: 1px solid #222; background: #0a0a0a; }
+        .red-glow { box-shadow: 0 0 30px rgba(255, 0, 51, 0.2); }
+        .progress-fill { transition: width 0.1s linear; }
+        .score-circle { width: 100px; height: 100px; border-radius: 50%; border: 8px solid #333; display: flex; items-center: center; justify-content: center; font-weight: 900; font-size: 1.5rem; }
+        .score-red { border-color: #ff0033; color: #ff0033; text-shadow: 0 0 10px #ff0033; }
+        .score-orange { border-color: #ff8800; color: #ff8800; }
+        .animate-in { animation: slideUp 0.5s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="min-h-screen overflow-x-hidden selection:bg-[#ff0033] selection:text-white">
+<body class="min-h-screen p-4 md:p-10 selection:bg-[#ff0033] selection:text-white">
 
-    <!-- HUD BACKGROUND -->
-    <div class="fixed inset-0 pointer-events-none z-0 opacity-20">
-        <div class="absolute inset-0 matrix-bg"></div>
-        <div class="h-full w-full opacity-10" style="background-image: radial-gradient(#ff0033 1px, transparent 1px); background-size: 20px 20px;"></div>
-    </div>
-
-    <!-- MAIN INTERFACE -->
-    <div class="relative z-10 max-w-6xl mx-auto p-6 md:p-12 min-h-screen flex flex-col">
-        
-        <!-- TOP NAV -->
-        <div class="flex justify-between items-end border-b border-gray-800 pb-8 mb-12">
+    <div class="max-w-5xl mx-auto">
+        <!-- HEADER -->
+        <header class="flex justify-between items-center border-b border-gray-800 pb-6 mb-10">
             <div>
-                <h1 class="text-3xl font-black text-white tracking-tighter">DIGITAL <span class="text-[#ff0033]">AM</span></h1>
-                <p class="text-[10px] text-gray-500 uppercase tracking-[5px] mt-2">Elite Infrastructure / Network Analysis</p>
+                <h1 class="text-2xl font-black text-white italic">DIGITAL <span class="text-[#ff0033]">AM</span></h1>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mono">Audit Deep-Scan Tool v3.0</p>
             </div>
-            <div class="hidden md:block text-right">
-                <p class="text-xs text-gray-600">CLIENT_IP: 192.168.1.254</p>
-                <p class="text-xs text-[#00ff66]">UPLINK: ACTIVE_ENCRYPTED</p>
-            </div>
-        </div>
+            <button onclick="location.reload()" class="text-[10px] text-gray-500 hover:text-white border border-gray-800 px-3 py-1 rounded">RESET SCAN</button>
+        </header>
 
-        <!-- VIEW 1: INITIAL SETUP -->
-        <div id="view-setup" class="flex-grow flex flex-col justify-center animate-fade-in">
-            <div class="terminal-window rounded-xl p-8 md:p-12 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🩺</div>
-                <h2 class="text-2xl font-bold text-white mb-2">SCANNER D'HÉMORRAGIE FINANCIÈRE</h2>
-                <p class="text-gray-500 mb-10 text-sm">Le noyau d'analyse va agréger les données de <span class="text-white">Google Lighthouse</span>, <span class="text-white">PageSpeed Insights</span> et <span class="text-white">Semrush</span> pour calculer votre perte réelle.</p>
+        <!-- VIEW 1: SETUP -->
+        <div id="view-setup" class="animate-in">
+            <div class="terminal-window p-8 md:p-12 rounded-2xl red-glow">
+                <h2 class="text-3xl font-black text-white mb-4">LANCER LE DIAGNOSTIC</h2>
+                <p class="text-gray-500 mb-10">Entrez l'URL du prospect pour générer le rapport d'hémorragie financière.</p>
                 
-                <div class="space-y-8">
-                    <div class="group">
-                        <label class="block text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3 group-focus-within:text-[#ff0033] transition-colors">Point d'entrée (URL du site)</label>
-                        <input type="text" id="target-url" placeholder="https://www.entreprise-exemple.fr" 
-                               class="w-full bg-black border-b-2 border-gray-800 p-4 text-xl text-white focus:outline-none focus:border-[#ff0033] transition-all font-bold placeholder:opacity-20">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-600 uppercase mb-2 mono tracking-widest">URL Cible</label>
+                        <input type="text" id="target-url" placeholder="https://www.exemple-artisan.fr" class="w-full bg-black border border-gray-800 p-4 text-white text-lg rounded focus:border-[#ff0033] outline-none">
                     </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3">Secteur d'activité</label>
-                            <select id="target-niche" class="w-full bg-black border border-gray-800 p-4 text-white focus:outline-none focus:border-[#ff0033]">
-                                <option value="electricien">⚡️ Électricien</option>
-                                <option value="plombier">🚿 Plombier</option>
-                                <option value="coiffeur">💇‍♀️ Coiffeur</option>
-                                <option value="carreleur">🧱 Carreleur</option>
-                                <option value="serrurier">🔑 Serrurier</option>
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-2 mono tracking-widest">Secteur</label>
+                            <select id="target-niche" class="w-full bg-black border border-gray-800 p-4 text-white rounded outline-none">
+                                <option value="electricien">Électricien</option>
+                                <option value="plombier">Plombier</option>
+                                <option value="coiffeur">Coiffeur</option>
+                                <option value="carreleur">Carreleur</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3">Zone de chalandise</label>
-                            <input type="text" id="target-location" value="Perpignan (66)" class="w-full bg-black border border-gray-800 p-4 text-white focus:outline-none focus:border-[#ff0033]">
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-2 mono tracking-widest">Ville</label>
+                            <input type="text" id="target-city" value="Perpignan" class="w-full bg-black border border-gray-800 p-4 text-white rounded outline-none">
                         </div>
                     </div>
-
-                    <button onclick="launchSequence()" class="w-full bg-[#ff0033] text-white font-black py-6 rounded uppercase tracking-[5px] hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(255,0,51,0.3)] text-lg">
-                        DÉMARRER LE SCAN PROFOND
-                    </button>
+                    <button onclick="runFastScan()" class="w-full bg-[#ff0033] text-white font-black py-5 rounded uppercase tracking-[5px] hover:bg-white hover:text-black transition-all">GÉNÉRER LE RAPPORT</button>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW 2: CORE ANALYSIS (THE 3 MINUTE TENSION) -->
-        <div id="view-analysis" class="hidden flex-grow flex flex-col space-y-6">
-            <!-- HUD Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-[#0a0a0a] border border-gray-800 p-4 rounded">
-                    <p class="text-[8px] text-gray-600 uppercase tracking-widest">Core Web Vitals</p>
-                    <p id="stat-cv" class="text-[#00ff66] text-xs font-bold mt-1">PENDING...</p>
+        <!-- VIEW 2: FAST SCAN (SIMULATED) -->
+        <div id="view-scanning" class="hidden flex flex-col justify-center items-center min-h-[60vh]">
+            <div class="w-full max-w-md space-y-6 text-center">
+                <h3 id="scan-status" class="text-xl font-bold text-white uppercase tracking-widest mono">Ping Google Server...</h3>
+                <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="w-0 h-full bg-[#ff0033] shadow-[0_0_15px_#ff0033] progress-fill"></div>
                 </div>
-                <div class="bg-[#0a0a0a] border border-gray-800 p-4 rounded">
-                    <p class="text-[8px] text-gray-600 uppercase tracking-widest">Mobile Throttle</p>
-                    <p id="stat-mt" class="text-gray-400 text-xs font-bold mt-1">4G_SIMULATED</p>
-                </div>
-                <div class="bg-[#0a0a0a] border border-gray-800 p-4 rounded">
-                    <p class="text-[8px] text-gray-600 uppercase tracking-widest">SEO Authority</p>
-                    <p id="stat-sa" class="text-gray-400 text-xs font-bold mt-1">SCRAPING...</p>
-                </div>
-                <div class="bg-[#0a0a0a] border border-gray-800 p-4 rounded">
-                    <p class="text-[8px] text-gray-600 uppercase tracking-widest">Cash Leak Est.</p>
-                    <p id="stat-cl" class="text-[#ff0033] text-xs font-bold mt-1 tracking-tighter animate-pulse">CALCULATING...</p>
-                </div>
-            </div>
-
-            <!-- Terminal Area -->
-            <div class="terminal-window flex-grow rounded-xl relative overflow-hidden flex flex-col">
-                <div class="scan-line"></div>
-                <div class="bg-[#111] p-2 flex items-center justify-between border-b border-gray-800">
-                    <div class="flex gap-1.5 ml-2">
-                        <div class="w-2 h-2 rounded-full bg-[#ff0033]"></div>
-                        <div class="w-2 h-2 rounded-full bg-gray-700"></div>
-                        <div class="w-2 h-2 rounded-full bg-gray-700"></div>
-                    </div>
-                    <div class="text-[8px] text-gray-600 font-mono tracking-widest mr-2 uppercase">Core Diagnostics v2.0.4 - Google Server Cluster [FRA-1]</div>
-                </div>
-                
-                <div id="terminal-logs" class="flex-grow p-6 overflow-y-auto space-y-1 text-xs md:text-sm">
-                    <!-- Logs injected by JS -->
-                </div>
-
-                <div class="p-6 bg-[#050505] border-t border-gray-800">
-                    <div class="flex justify-between items-end mb-3">
-                        <div>
-                            <p id="task-status" class="text-[#ff0033] text-[10px] font-bold uppercase tracking-widest">Initialisation du noyau...</p>
-                            <p id="sub-task" class="text-gray-600 text-[8px] mt-1 italic">Vérification des certificats SSL et structure DOM...</p>
-                        </div>
-                        <div id="percent-display" class="text-2xl font-black text-white italic">0%</div>
-                    </div>
-                    <div class="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden border border-gray-800">
-                        <div id="main-progress" class="progress-bar-fill h-full w-0"></div>
-                    </div>
+                <div id="scan-logs" class="text-[10px] text-gray-600 uppercase tracking-widest mono space-y-1">
+                    <p>> AUTHENTICATION OK</p>
+                    <p>> FETCHING LIGHTHOUSE METRICS...</p>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW 3: BRUTAL RESULT -->
-        <div id="view-result" class="hidden flex-grow flex flex-col justify-center items-center text-center space-y-10 animate-fade-in">
-            <div class="space-y-4">
-                <h2 class="text-[#ff0033] text-6xl md:text-8xl font-black tracking-tighter glitch">URGENCE CRITIQUE</h2>
-                <div class="bg-white text-black inline-block px-8 py-2 font-black text-xl uppercase tracking-[10px]">HÉMORRAGIE DÉTECTÉE</div>
+        <!-- VIEW 3: FULL REPORT -->
+        <div id="view-report" class="hidden animate-in space-y-8">
+            <!-- Alert Banner -->
+            <div class="bg-[#ff0033] text-white p-6 rounded-xl flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                <div>
+                    <h2 class="text-2xl font-black uppercase">Urgence Critique Détectée</h2>
+                    <p class="font-bold opacity-90 uppercase text-xs tracking-widest">Votre site web rejette 87% des clients potentiels.</p>
+                </div>
+                <div class="text-4xl font-black mono tracking-tighter" id="report-loss">880 000€</div>
             </div>
 
-            <div class="terminal-window p-10 md:p-16 rounded-2xl border-2 border-[#ff0033] bg-black shadow-[0_0_100px_rgba(255,0,51,0.2)]">
-                <p class="text-gray-500 uppercase tracking-widest text-sm mb-4">Manque à gagner annuel estimé :</p>
-                <div id="final-cash-loss" class="text-7xl md:text-9xl font-black text-[#ff0033] tracking-tighter mb-8 drop-shadow-[0_0_30px_#ff0033]">-- --- €</div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left border-t border-gray-800 pt-10">
-                    <div>
-                        <p class="text-[10px] text-gray-600 uppercase">Score Performance</p>
-                        <p class="text-2xl font-black text-red-600">14/100 (CATASTROPHIQUE)</p>
+            <!-- Scores Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="terminal-window p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="score-circle score-red mb-4">14</div>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold mono">Performance Mobile</p>
+                </div>
+                <div class="terminal-window p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="score-circle score-red mb-4">22</div>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold mono">SEO Technique</p>
+                </div>
+                <div class="terminal-window p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="score-circle score-orange mb-4">41</div>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold mono">Accessibilité</p>
+                </div>
+                <div class="terminal-window p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="score-circle score-red mb-4">08</div>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold mono">Conversion</p>
+                </div>
+            </div>
+
+            <!-- PageSpeed Insight Section -->
+            <div class="terminal-window p-8 rounded-2xl">
+                <h3 class="text-lg font-bold text-white mb-6 uppercase border-b border-gray-800 pb-4 flex items-center gap-2">
+                    <span class="text-[#ff0033]">●</span> GOOGLE PAGESPEED INSIGHTS - DIAGNOSTIC
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-end border-b border-gray-900 pb-2">
+                            <span class="text-gray-400 text-sm">Largest Contentful Paint (LCP)</span>
+                            <span class="text-[#ff0033] font-bold">6.4s</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b border-gray-900 pb-2">
+                            <span class="text-gray-400 text-sm">Cumulative Layout Shift (CLS)</span>
+                            <span class="text-orange-500 font-bold">0.32</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b border-gray-900 pb-2">
+                            <span class="text-gray-400 text-sm">Total Blocking Time (TBT)</span>
+                            <span class="text-[#ff0033] font-bold">1,240ms</span>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-[10px] text-gray-600 uppercase">Perte de trafic local</p>
-                        <p class="text-2xl font-black text-red-600">87.4% (FUITE VERS CONCURRENCE)</p>
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-600 uppercase">Conversion Mobile</p>
-                        <p class="text-2xl font-black text-red-600">0.2% (INEXISTANT)</p>
+                    <div class="bg-[#111] p-6 rounded border border-gray-800">
+                        <p class="text-red-500 font-bold text-xs uppercase mb-4 underline">Diagnostic Brutal :</p>
+                        <p class="text-gray-400 text-xs leading-relaxed italic">"Le site est trop lourd pour les connexions mobiles 4G de Perpignan. L'utilisateur moyen quitte la page avant même d'avoir vu votre numéro de téléphone. Google vous pénalise et vous cache au profit de vos concurrents."</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col md:flex-row gap-6">
-                <button onclick="window.location.href='index.html'" class="bg-white text-black font-black px-12 py-5 uppercase tracking-widest hover:bg-[#ff0033] hover:text-white transition-all text-xl">
+            <!-- Concurrence Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="terminal-window p-8 rounded-2xl">
+                    <h3 class="text-lg font-bold text-white mb-6 uppercase border-b border-gray-800 pb-4 flex items-center gap-2">
+                        <span class="text-[#00ff66]">●</span> ANALYSE DE LA CONCURRENCE LOCALE
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-black p-3 border border-gray-800">
+                            <span class="text-white text-xs font-bold uppercase tracking-widest">Votre Site</span>
+                            <span class="text-[#ff0033] font-black italic">POS. 12</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-[#111] p-3">
+                            <span class="text-gray-400 text-xs uppercase">Concurrent Local #1</span>
+                            <span class="text-[#00ff66] font-bold italic">POS. 1</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-[#111] p-3">
+                            <span class="text-gray-400 text-xs uppercase">Concurrent Local #2</span>
+                            <span class="text-[#00ff66] font-bold italic">POS. 2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="terminal-window p-8 rounded-2xl border-l-4 border-[#ff0033]">
+                    <h3 class="text-lg font-bold text-white mb-4 uppercase">MANQUE À GAGNER</h3>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-[5px] mb-6">Simulation Financière</p>
+                    <div class="space-y-2">
+                        <p class="text-gray-400 text-xs">Recherches / mois : <span class="text-white float-right">1,200+</span></p>
+                        <p class="text-gray-400 text-xs">Clics perdus : <span class="text-white float-right">~980</span></p>
+                        <p class="text-gray-400 text-xs">Panier moyen : <span class="text-white float-right" id="report-panier">150€</span></p>
+                        <div class="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">
+                            <span class="text-white font-black uppercase text-sm italic">PERTE ESTIMÉE</span>
+                            <span class="text-[#ff0033] text-2xl font-black" id="report-perte-mois">73 500€ / mois</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="flex justify-center pt-10 pb-20">
+                <button onclick="window.location.href='index.html'" class="bg-white text-black font-black px-16 py-6 rounded-full uppercase tracking-[10px] text-xl hover:bg-[#ff0033] hover:text-white transition-all shadow-[0_0_50px_rgba(255,255,255,0.1)]">
                     STOPPER L'HÉMORRAGIE
                 </button>
-                <button onclick="window.print()" class="border border-gray-700 text-gray-500 px-8 py-5 uppercase tracking-widest hover:text-white transition-all text-sm">
-                    GÉNÉRER LE RAPPORT PDF
-                </button>
             </div>
         </div>
-
-    </div>
-
-    <!-- FOOTER SYSTEM -->
-    <div class="fixed bottom-4 right-6 text-[8px] text-gray-700 font-mono tracking-widest z-50 pointer-events-none uppercase">
-        Digital AM Internal Tool // Auth: Matteo // Status: Connected
     </div>
 
     <script>
-        const scripts = [
-            // STEP 1: Core Web Vitals (0-30s)
-            { t: 2, msg: "> [HTTP] Connexion au serveur cible...", task: "Handshake", sub: "Handshake SSL/TLS 1.3" },
-            { t: 5, msg: "> [SYSTEM] Lancement du moteur Chrome Headless (Lighthouse)...", task: "Lighthouse Init", sub: "Warm-up CPU Cluster" },
-            { t: 10, msg: "> [PS_INSIGHT] Calcul du Largest Contentful Paint (LCP)...", task: "Analyse PSI", sub: "Rendu visuel principal" },
-            { t: 15, msg: "> [WARN] LCP détecté à 6.4s (Seuil critique > 2.5s).", task: "Performance", sub: "Analyse du temps de réponse serveur" },
-            { t: 20, msg: "> [PS_INSIGHT] Analyse du Cumulative Layout Shift (CLS)...", task: "Analyse PSI", sub: "Stabilité visuelle du DOM" },
-            { t: 25, msg: "> [ALERT] Score de performance mobile : 14/100.", task: "Diagnostic PSI", sub: "Compression images manquante" },
-            
-            // STEP 2: SEO & Semantic (30-90s)
-            { t: 35, msg: "> [SEO_ENGINE] Crawl des balises meta et structure Hx...", task: "Crawl Sémantique", sub: "Structure hiérarchique" },
-            { t: 45, msg: "> [ERROR] Absence de balise H1 unique sur la home page.", task: "Audit SEO", sub: "Pertinence sémantique Google" },
-            { t: 55, msg: "> [AHREFS_API] Analyse des backlinks et autorité du domaine...", task: "Autorité", sub: "Profil de liens entrants" },
-            { t: 65, msg: "> [SEMRUSH_API] Détection des mots-clés positionnés...", task: "Visibilité", sub: "Analyse du trafic organique" },
-            { t: 75, msg: "> [WARN] Aucun mot-clé cible en TOP 3 Local Pack.", task: "Domination Locale", sub: "Audit Google Business Profile" },
-            { t: 85, msg: "> [COMP_SCAN] Identification des 3 leaders sur Perpignan...", task: "Veille Concurrentielle", sub: "Analyse de part de marché" },
-            
-            // STEP 3: Competitor Hijacking (90-150s)
-            { t: 100, msg: "> [SYSTEM] Calcul de la fuite de trafic vers les concurrents...", task: "Trafic Hijacking", sub: "Analyse du comportement utilisateur" },
-            { t: 115, msg: "> [INFO] 82% des utilisateurs sur mobile quittent le site avant chargement.", task: "Trafic Hijacking", sub: "Taux de rebond mobile" },
-            { t: 130, msg: "> [CALC] Simulation du tunnel de vente défectueux...", task: "Conversion UX", sub: "Efficacité des CTA" },
-            { t: 145, msg: "> [ALERT] Point de friction majeur détecté sur le formulaire de contact.", task: "Conversion UX", sub: "Audit tunnel de conversion" },
-            
-            // STEP 4: Financial Leak (150-180s)
-            { t: 160, msg: "> [FINANCE] Application du multiplicateur ROI sectoriel...", task: "Calcul ROI", sub: "Pondération panier moyen" },
-            { t: 170, msg: "> [SYSTEM] Compilation finale du rapport d'hémorragie...", task: "Finalisation", sub: "Agrégation des 4 auditeurs" },
-            { t: 178, msg: "> [SYSTEM] GÉNÉRATION DU RAPPORT CRITIQUE...", task: "Rapport", sub: "Ready for output." }
-        ];
-
-        const sectorData = {
-            electricien: { cash: "880 000 €", cv: "RED", sa: "LOW" },
-            plombier: { cash: "24 000 €", cv: "ORANGE", sa: "MED" },
-            coiffeur: { cash: "18 000 €", cv: "RED", sa: "LOW" },
-            carreleur: { cash: "72 000 €", cv: "RED", sa: "LOW" },
-            serrurier: { cash: "1 250 000 €", cv: "CRITICAL", sa: "ZERO" }
+        const dataMap = {
+            electricien: { loss: "880 000€", panier: "150€", perteMois: "73 500€" },
+            plombier: { loss: "24 000€", panier: "250€", perteMois: "2 000€" },
+            coiffeur: { loss: "18 000€", panier: "50€", perteMois: "1 500€" },
+            carreleur: { loss: "72 000€", panier: "2000€", perteMois: "6 000€" }
         };
 
-        let totalTime = 180; // 3 minutes total
+        const scanLogs = [
+            "Handshake SSL/TLS 1.3... OK",
+            "Crawl structure DOM... OK",
+            "Fetch PageSpeed API... SUCCESS",
+            "Analyzing LCP/CLS metrics...",
+            "Competitor local mapping...",
+            "Calculating financial impact...",
+            "Compiling final report..."
+        ];
 
-        function launchSequence() {
+        function runFastScan() {
             const url = document.getElementById('target-url').value;
-            if (!url) { alert("ENTREZ UNE URL CIBLE."); return; }
+            if(!url) { alert("ENTREZ UNE URL"); return; }
 
             document.getElementById('view-setup').classList.add('hidden');
-            document.getElementById('view-analysis').classList.remove('hidden');
+            document.getElementById('view-scanning').classList.remove('hidden');
 
-            const startTime = Date.now();
-            const logContainer = document.getElementById('terminal-logs');
-            const mainProgress = document.getElementById('main-progress');
-            const percentDisplay = document.getElementById('percent-display');
-            const taskStatus = document.getElementById('task-status');
-            const subTask = document.getElementById('sub-task');
+            let progress = 0;
+            const bar = document.getElementById('progress-bar');
+            const status = document.getElementById('scan-status');
+            const logs = document.getElementById('scan-logs');
 
             const interval = setInterval(() => {
-                const elapsed = (Date.now() - startTime) / 1000;
-                let percent = Math.min(Math.round((elapsed / totalTime) * 100), 100);
-                
-                // Slow down at 90% to simulate "complex calculation"
-                if (percent > 90) {
-                    percent = 90 + Math.round((percent - 90) / 2);
-                }
+                progress += 2;
+                bar.style.width = progress + "%";
 
-                percentDisplay.innerText = percent + "%";
-                mainProgress.style.width = percent + "%";
-
-                // Inject logs based on time
-                scripts.forEach(script => {
-                    if (elapsed >= script.t && !script.displayed) {
-                        const div = document.createElement('div');
-                        div.className = "log-entry";
-                        if (script.msg.includes('ALERT') || script.msg.includes('ERROR')) {
-                            div.innerHTML = `<span class="text-[#ff0033] font-bold">${script.msg}</span>`;
-                        } else if (script.msg.includes('WARN')) {
-                            div.innerHTML = `<span class="text-yellow-500">${script.msg}</span>`;
-                        } else {
-                            div.innerHTML = `<span class="text-gray-400">${script.msg}</span>`;
-                        }
-                        logContainer.appendChild(div);
-                        logContainer.scrollTop = logContainer.scrollHeight;
-                        
-                        taskStatus.innerText = script.task + "...";
-                        subTask.innerText = script.sub;
-                        script.displayed = true;
-
-                        // Update HUD stats randomly
-                        if (script.t > 15) document.getElementById('stat-cv').innerText = "FAIL (14)";
-                        if (script.t > 60) document.getElementById('stat-sa').innerText = "LOW (0.4)";
+                if (progress % 15 === 0) {
+                    const logIdx = Math.floor(progress / 15);
+                    if (scanLogs[logIdx]) {
+                        const p = document.createElement('p');
+                        p.innerText = "> " + scanLogs[logIdx];
+                        logs.appendChild(p);
+                        status.innerText = scanLogs[logIdx].replace("...", "");
                     }
-                });
-
-                if (elapsed >= totalTime) {
-                    clearInterval(interval);
-                    setTimeout(showFinalResult, 1000);
                 }
-            }, 500);
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(showReport, 500);
+                }
+            }, 50); // 2.5 secondes de scan total pour le test
         }
 
-        function showFinalResult() {
+        function showReport() {
             const niche = document.getElementById('target-niche').value;
-            const data = sectorData[niche];
-            
-            document.getElementById('view-analysis').classList.add('hidden');
-            document.getElementById('view-result').classList.remove('hidden');
-            document.getElementById('final-cash-loss').innerText = data.cash;
+            const data = dataMap[niche];
+
+            document.getElementById('view-scanning').classList.add('hidden');
+            document.getElementById('view-report').classList.remove('hidden');
+
+            document.getElementById('report-loss').innerText = data.loss;
+            document.getElementById('report-panier').innerText = data.panier;
+            document.getElementById('report-perte-mois').innerText = data.perteMois + " / MOIS";
         }
     </script>
 </body>
