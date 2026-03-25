@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr" class="bg-black text-gray-300">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIAGNOSTIC D'HÉMORRAGIE - Digital AM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+        body { font-family: 'Fira Code', monospace; }
+        .terminal-glow { box-shadow: 0 0 20px rgba(255, 0, 51, 0.2); }
+        .progress-bar { transition: width 0.5s ease-out; }
+        .blink { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 0, 51, 0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-10 relative overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#ff0033 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+    <!-- Header -->
+    <header class="relative z-10 flex justify-between items-center border-b border-gray-800 pb-6 mb-10">
+        <div>
+            <h1 class="text-2xl font-bold text-white tracking-tighter">DIGITAL <span class="text-brand-red text-[#ff0033]">AM</span></h1>
+            <p class="text-xs text-gray-500 uppercase tracking-widest italic">Protocol: Financial Leak Analysis</p>
+        </div>
+        <div class="text-right">
+            <p id="system-date" class="text-xs text-gray-500"></p>
+            <p class="text-xs text-[#00ff66]">STATUS: ENCRYPTED_CONNECTION</p>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-grow flex flex-col max-w-5xl mx-auto w-full">
+        <!-- Input State -->
+        <div id="setup-view" class="bg-[#0a0a0a] border border-gray-800 p-8 rounded-lg terminal-glow">
+            <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-wider">Lancer le diagnostic d'urgence</h2>
+            <p class="text-sm text-gray-400 mb-8">Entrez l'URL du site à analyser pour détecter les fuites de clients et le manque à gagner annuel.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">URL DU SITE WEB</label>
+                    <input type="text" id="site-url" placeholder="https://www.monsite-artisan.fr" class="w-full bg-black border border-gray-700 p-4 rounded text-white focus:outline-none focus:border-[#ff0033] transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">NICHE / MÉTIER</label>
+                    <select id="niche" class="w-full bg-black border border-gray-700 p-4 rounded text-white focus:outline-none focus:border-[#ff0033] transition-colors">
+                        <option value="electricien">Électricien</option>
+                        <option value="plombier">Plombier</option>
+                        <option value="coiffeur">Coiffeur</option>
+                        <option value="carreleur">Carreleur</option>
+                        <option value="serrurier">Serrurier</option>
+                    </select>
+                </div>
+                <button onclick="startAnalysis()" class="w-full bg-[#ff0033] hover:bg-[#cc002a] text-white font-bold py-4 rounded uppercase tracking-widest transition-all shadow-lg shadow-red-900/20">
+                    Démarrer le scan profond (3 min)
+                </button>
+            </div>
+        </div>
+
+        <!-- Analysis State (Hidden initially) -->
+        <div id="analysis-view" class="hidden flex-grow flex flex-col bg-[#0a0a0a] border border-gray-800 rounded-lg terminal-glow relative overflow-hidden">
+            <div class="scan-line"></div>
+            
+            <!-- Terminal Header -->
+            <div class="bg-[#111] border-b border-gray-800 p-3 flex items-center justify-between">
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">Analyseur de Flux Financiers v4.2</div>
+            </div>
+
+            <!-- Log Content -->
+            <div id="log-content" class="flex-grow p-6 text-sm overflow-y-auto font-mono space-y-2">
+                <p class="text-blue-400">[SYSTEM] Initialisation du noyau d'analyse...</p>
+            </div>
+
+            <!-- Footer Progress -->
+            <div class="p-6 border-t border-gray-800 bg-[#0a0a0a]">
+                <div class="flex justify-between text-xs mb-2">
+                    <span id="current-task" class="text-gray-400 italic">Connexion aux API Google...</span>
+                    <span id="progress-percent" class="text-white">0%</span>
+                </div>
+                <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="progress-bar bg-[#ff0033] h-full w-0"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result State (Hidden initially) -->
+        <div id="result-view" class="hidden flex-grow flex flex-col justify-center items-center text-center p-8 bg-[#0a0a0a] border-4 border-[#ff0033] rounded-lg terminal-glow animate-pulse">
+            <h2 class="text-4xl md:text-6xl font-black text-white mb-4 uppercase">URGENCE DÉTECTÉE</h2>
+            <div class="bg-[#ff0033] text-white px-6 py-2 rounded-full font-bold mb-10 text-xl tracking-widest uppercase">HÉMORRAGIE FINANCIÈRE</div>
+            
+            <p class="text-gray-400 text-lg mb-4 uppercase tracking-widest">Manque à gagner annuel estimé :</p>
+            <div id="final-loss" class="text-6xl md:text-8xl font-black text-[#ff0033] mb-10 drop-shadow-[0_0_20px_rgba(255,0,51,0.5)]">-- --- €</div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl text-left mb-10">
+                <div class="p-4 bg-black border border-gray-800 rounded">
+                    <p class="text-xs text-gray-500 uppercase">Taux de conversion</p>
+                    <p class="text-xl text-red-500 font-bold">CRITIQUE (0.4%)</p>
+                </div>
+                <div class="p-4 bg-black border border-gray-800 rounded">
+                    <p class="text-xs text-gray-500 uppercase">Perte de trafic local</p>
+                    <p class="text-xl text-red-500 font-bold">MASSIVE (82%)</p>
+                </div>
+            </div>
+
+            <button onclick="window.location.href='index.html'" class="bg-white text-black font-black px-10 py-4 uppercase tracking-widest hover:bg-[#ff0033] hover:text-white transition-all">
+                Stopper l'hémorragie maintenant
+            </button>
+        </div>
+    </main>
+
+    <footer class="mt-10 relative z-10 text-center">
+        <p class="text-[10px] text-gray-600 tracking-[10px] uppercase">Digital AM Agency - Perpignan - Confidential</p>
+    </footer>
+
+    <script>
+        document.getElementById('system-date').innerText = new Date().toLocaleString();
+
+        const logs = [
+            { t: 0, msg: "[SYSTEM] Diagnostic lancé sur l'hôte cible...", task: "Initialisation" },
+            { t: 5, msg: "[INFO] Ping Google Lighthouse API : 24ms. OK.", task: "Connexion API" },
+            { t: 15, msg: "[FETCH] Récupération des metrics de performance mobile...", task: "Analyse Performance" },
+            { t: 25, msg: "[WARN] Temps de chargement au-dessus du seuil tolérable (> 3.5s).", task: "Analyse Performance" },
+            { t: 35, msg: "[SCAN] Analyse de la structure sémantique (H1-H6)...", task: "Audit SEO" },
+            { t: 45, msg: "[ALERT] Balises Meta manquantes sur 80% des pages de service.", task: "Audit SEO" },
+            { t: 60, msg: "[GEO] Détection de la zone de chalandise : Perpignan et alentours.", task: "Localisation" },
+            { t: 75, msg: "[COMP] Analyse du top 10 des concurrents locaux...", task: "Veille Concurrentielle" },
+            { t: 90, msg: "[COMP] Concurrent dominant détecté : [ANONYMOUS_LEADER].", task: "Veille Concurrentielle" },
+            { t: 105, msg: "[WARN] Votre visibilité sur Google Maps est inférieure à 12%.", task: "Dominance Google" },
+            { t: 120, msg: "[CALC] Simulation du tunnel de conversion utilisateur...", task: "Conversion UX" },
+            { t: 135, msg: "[CALC] Analyse du 'Call-to-Action' : Inefficace ou Manquant.", task: "Conversion UX" },
+            { t: 150, msg: "[CALC] Calcul du coût d'opportunité par client perdu...", task: "Impact Financier" },
+            { t: 165, msg: "[INFO] Pondération par panier moyen du secteur...", task: "Impact Financier" },
+            { t: 175, msg: "[FINAL] Compilation du rapport d'hémorragie...", task: "Finalisation" },
+        ];
+
+        const losses = {
+            electricien: "880 000 €",
+            plombier: "24 000 €",
+            coiffeur: "18 000 €",
+            carreleur: "72 000 €",
+            serrurier: "1 250 000 €"
+        };
+
+        let progress = 0;
+        let totalTime = 180; // 3 minutes total
+
+        function startAnalysis() {
+            const url = document.getElementById('site-url').value;
+            if (!url) {
+                alert("Veuillez entrer une URL.");
+                return;
+            }
+
+            document.getElementById('setup-view').classList.add('hidden');
+            document.getElementById('analysis-view').classList.remove('hidden');
+
+            const startTime = Date.now();
+            const logContainer = document.getElementById('log-content');
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercent = document.getElementById('progress-percent');
+            const currentTask = document.getElementById('current-task');
+
+            const interval = setInterval(() => {
+                const elapsed = (Date.now() - startTime) / 1000;
+                const percent = Math.min(Math.round((elapsed / totalTime) * 100), 100);
+                
+                progressPercent.innerText = percent + "%";
+                progressBar.style.width = percent + "%";
+
+                // Add logs based on timing
+                logs.forEach(log => {
+                    if (elapsed >= log.t && !log.displayed) {
+                        const p = document.createElement('p');
+                        p.className = log.msg.includes('ALERT') || log.msg.includes('CRITICAL') ? 'text-red-500 font-bold' : (log.msg.includes('WARN') ? 'text-yellow-500' : 'text-gray-300');
+                        p.innerText = log.msg;
+                        logContainer.appendChild(p);
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                        currentTask.innerText = log.task + "...";
+                        log.displayed = true;
+                    }
+                });
+
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    setTimeout(showResults, 1000);
+                }
+            }, 500);
+        }
+
+        function showResults() {
+            const niche = document.getElementById('niche').value;
+            document.getElementById('analysis-view').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            document.getElementById('final-loss').innerText = losses[niche] || "150 000 €";
+        }
+    </script>
+</body>
+</html>
